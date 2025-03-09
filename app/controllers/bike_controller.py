@@ -1,6 +1,8 @@
 from flask import Blueprint, request
+from flask_jwt_extended import jwt_required
 from flask_login import login_required
 
+from app.services.bike_service import get_all_bikes, get_bike, delete_bike, create_bike, update_bike
 from app.services.chain_service import create_chain, delete_chain, update_chain, get_chain, get_all_chains
 from app.utils.decorators import admin_required
 
@@ -10,6 +12,7 @@ bp = Blueprint("bike", __name__)
 @bp.route("/create", methods=["POST"])
 @login_required
 @admin_required
+@jwt_required()
 def create():
     data = request.json
     response = create_bike(data)
@@ -18,9 +21,10 @@ def create():
 
 @bp.route("/create-custom", methods=["POST"])
 @login_required
-def create():
+@jwt_required()
+def create_custom():
     data = request.json
-    response = create_custom_bike(data)
+    response = create_bike(data)
     return response
 
 
@@ -34,9 +38,8 @@ def delete(id):
 
 @bp.route("/delete-custom/<int:id>", methods=["DELETE"])
 @login_required
-@admin_required
-def delete(id):
-    response = delete_custom_bike(id)
+def delete_custom(id):
+    response = delete_bike(id)
     return response
 
 
@@ -51,7 +54,7 @@ def update(id):
 @bp.route("/update-custom/<int:id>", methods=["PUT"])
 @login_required
 def update(id):
-    response = update_custom_bike(id)
+    response = update_bike(id)
     return response
 
 
