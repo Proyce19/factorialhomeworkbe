@@ -9,12 +9,12 @@ def create_pt(data):
     type_ = data.get('type', None)
 
     if not type_:
-        return jsonify({"message": "Please provide type of product"}), 400
+        return jsonify({"message": "Please provide type of product"}), 422
 
     existing_pt = get_pt_by_type(type_)
 
     if existing_pt:
-        return jsonify({"message": "The product type already exist."}), 400
+        return jsonify({"message": "The product type already exist."}), 422
 
     new_pt = ProductType(type=type_)
     db.session.add(new_pt)
@@ -32,17 +32,17 @@ def update_pt(id, data):
     type_ = data.get('type', None)
 
     if not type_:
-        return jsonify({"message": "Please provide type of product"}), 400
+        return jsonify({"message": "Please provide type of product"}), 422
 
     existing_pt = get_pt_by_id(id)
 
     if not existing_pt:
-        return jsonify({"message": "Please provide existing type product"}), 400
+        return jsonify({"message": "Please provide existing type product"}), 422
 
     if existing_pt.type != type_:
         existing_pt_with_type = get_pt_by_type(type_)
         if existing_pt_with_type:
-            return jsonify({"message": "The product type already exist."}), 400
+            return jsonify({"message": "The product type already exist."}), 422
         existing_pt.type = type_
 
     db.session.add(existing_pt)

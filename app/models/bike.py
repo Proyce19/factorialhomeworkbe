@@ -30,13 +30,14 @@ class Bike(db.Model):
     def to_dict(self):
         return {"id": self.id,
                 "name": self.name,
-                "frame": self.frame.name,
-                "rim": self.rim.color,
-                "wheel": self.wheel.type,
-                "chain": self.chain.type,
+                "frame": self.frame.to_dict(),
+                "rim": self.rim.to_dict(),
+                "wheel": self.wheel.to_dict(),
+                "chain": self.chain.to_dict(),
                 "price": self.price,
                 "stock": self.stock,
-                "in_stock": self.in_stock}
+                "in_stock": self.in_stock,
+                "product_id": self.product_id}
 
     def update_stock(self, diff):
         self.stock -= diff

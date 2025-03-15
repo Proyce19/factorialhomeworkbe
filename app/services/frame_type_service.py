@@ -15,12 +15,12 @@ def create_ft(data):
         in_stock = True
 
     if not type_:
-        return jsonify({"message": "Please provide type of frame"}), 400
+        return jsonify({"message": "Please provide type of frame"}), 422
 
     existing_ft = get_ft_by_type(type_)
 
     if existing_ft:
-        return jsonify({"message": "The frame with the provided type already exist."}), 400
+        return jsonify({"message": "The frame with the provided type already exist."}), 422
 
     new_ft = FrameType(type=type_, price=price, in_stock=in_stock, stock=stock)
     db.session.add(new_ft)
@@ -44,17 +44,17 @@ def update_ft(id, data):
         in_stock = True
 
     if not type_:
-        return jsonify({"message": "Please provide type of frame"}), 400
+        return jsonify({"message": "Please provide type of frame"}), 422
 
     existing_ft = get_ft_by_id(id)
 
     if not existing_ft:
-        return jsonify({"message": "Please provide existing frame type"}), 400
+        return jsonify({"message": "Please provide existing frame type"}), 422
 
     if existing_ft.type != type_:
         existing_ft_with_type = get_ft_by_type(type_)
         if existing_ft_with_type:
-            return jsonify({"message": "The frame with the provided type already exist."}), 400
+            return jsonify({"message": "The frame with the provided type already exist."}), 422
         existing_ft.type = type_
 
     existing_ft.price = price

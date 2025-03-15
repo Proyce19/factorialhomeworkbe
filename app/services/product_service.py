@@ -10,12 +10,12 @@ def create_product(data):
     type_id = data.get('typeId', None)
 
     if not type_id:
-        return jsonify({"message": "Please provide a type of product"}), 400
+        return jsonify({"message": "Please provide a type of product"}), 422
 
     type_ = get_pt_by_id(type_id)
 
     if type_.type == 'bike':
-        return jsonify({"message": "Bike products are created when you're creating a bike"}), 400
+        return jsonify({"message": "Bike products are created when you're creating a bike"}), 422
 
     name = data.get('name', None)
     price = data.get('price', None)
@@ -34,7 +34,7 @@ def create_product(data):
 def delete_product(id):
     product = get_product_by_id(id)
     if product.product_type.type == "bike":
-        return jsonify({"message": "Product with type bike is deleted when the related bike is deleted"}), 400
+        return jsonify({"message": "Product with type bike is deleted when the related bike is deleted"}), 422
     delete_product_by_id(id)
     return jsonify({"message": "Product deleted successfully"}), 204
 
@@ -43,17 +43,17 @@ def update_product(id, data):
     type_id = data.get('typeId', None)
 
     if not type_id:
-        return jsonify({"message": "Please provide a type of product"}), 400
+        return jsonify({"message": "Please provide a type of product"}), 422
 
     type_ = get_pt_by_id(type_id)
 
     if type_.type == 'bike':
-        return jsonify({"message": "Bike products are updated when you're updating a bike"}), 400
+        return jsonify({"message": "Bike products are updated when you're updating a bike"}), 422
 
     product = get_product_by_id(id)
 
     if not product:
-        return jsonify({"message": "The product does not exist"}), 400
+        return jsonify({"message": "The product does not exist"}), 422
 
     name = data.get('name', None)
     price = data.get('price', None)

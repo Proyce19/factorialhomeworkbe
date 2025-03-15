@@ -15,12 +15,12 @@ def create_wheel(data):
         in_stock = True
 
     if not type_wheel:
-        return jsonify({"message": "Please provide type of wheel"}), 400
+        return jsonify({"message": "Please provide type of wheel"}), 422
 
     existing_wheel = get_wheel_by_type(type_wheel)
 
     if existing_wheel:
-        return jsonify({"message": "The wheel with the provided type already exist."}), 400
+        return jsonify({"message": "The wheel with the provided type already exist."}), 422
 
     new_wheel = Wheel(type=type_wheel, price=price, in_stock=in_stock, stock=stock)
     db.session.add(new_wheel)
@@ -44,17 +44,17 @@ def update_wheel(id, data):
         in_stock = True
 
     if not type_wheel:
-        return jsonify({"message": "Please provide type of wheel"}), 400
+        return jsonify({"message": "Please provide type of wheel"}), 422
 
     existing_wheel = get_wheel_by_id(id)
 
     if not existing_wheel:
-        return jsonify({"message": "Please provide existing wheel"}), 400
+        return jsonify({"message": "Please provide existing wheel"}), 422
 
     if existing_wheel.type != type_wheel:
         existing_wheel_with_type = get_wheel_by_type(type_wheel)
         if existing_wheel_with_type:
-            return jsonify({"message": "The wheel with the provided type already exist."}), 400
+            return jsonify({"message": "The wheel with the provided type already exist."}), 422
         existing_wheel.type = type_wheel
 
     existing_wheel.price = price

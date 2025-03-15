@@ -15,12 +15,12 @@ def create_rim(data):
         in_stock = True
 
     if not color:
-        return jsonify({"message": "Please provide color for the rim"}), 400
+        return jsonify({"message": "Please provide color for the rim"}), 422
 
     existing_rim = get_rim_by_color(color)
 
     if existing_rim:
-        return jsonify({"message": "The rim with the provided color already exist."}), 400
+        return jsonify({"message": "The rim with the provided color already exist."}), 422
 
     new_rim = Rim(color=color, price=price, in_stock=in_stock, stock=stock)
     db.session.add(new_rim)
@@ -44,17 +44,17 @@ def update_rim(id, data):
         in_stock = True
 
     if not color:
-        return jsonify({"message": "Please provide color for the rim"}), 400
+        return jsonify({"message": "Please provide color for the rim"}), 422
 
     existing_rim = get_rim_by_id(id)
 
     if not existing_rim:
-        return jsonify({"message": "Please provide existing rim"}), 400
+        return jsonify({"message": "Please provide existing rim"}), 422
 
     if existing_rim.color != color:
         existing_chain_with_color = get_rim_by_color(color)
         if existing_chain_with_color:
-            return jsonify({"message": "The Rim with the provided color already exist."}), 400
+            return jsonify({"message": "The Rim with the provided color already exist."}), 422
         existing_rim.type = color
 
     existing_rim.price = price

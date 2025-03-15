@@ -29,7 +29,7 @@ def register_fct_user(data: dict) -> tuple[Response, int]:
     password = data.get("password")
 
     if get_user_by_username(username):
-        return jsonify({"message": "User already exists"}), 400
+        return jsonify({"message": "User already exists"}), 422
 
     hashed_password = generate_password_hash(password, method='pbkdf2')
     new_user = User(username=username, password_hash=hashed_password)

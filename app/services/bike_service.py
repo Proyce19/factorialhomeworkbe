@@ -30,49 +30,49 @@ def create_bike(data):
     stock = data.get('stock', None)
 
     if not name:
-        return jsonify({"message": "Please provide name for the bike"}), 400
+        return jsonify({"message": "Please provide name for the bike"}), 422
 
     if not frame_id:
-        return jsonify({"message": "Please provide frame"}), 400
+        return jsonify({"message": "Please provide frame"}), 422
 
     if not wheel_id:
-        return jsonify({"message": "Please provide wheel"}), 400
+        return jsonify({"message": "Please provide wheel"}), 422
 
     if not rim_id:
-        return jsonify({"message": "Please provide rim"}), 400
+        return jsonify({"message": "Please provide rim"}), 422
 
     if not chain_id:
-        return jsonify({"message": "Please provide chain"}), 400
+        return jsonify({"message": "Please provide chain"}), 422
 
     frame = get_frame_by_id(frame_id)
     if not frame:
-        return jsonify({"message": "The provided frame does not exits"}), 400
+        return jsonify({"message": "The provided frame does not exits"}), 422
 
     wheel = get_wheel_by_id(wheel_id)
     if not wheel:
-        return jsonify({"message": "The provided wheel does not exits"}), 400
+        return jsonify({"message": "The provided wheel does not exits"}), 422
 
     rim = get_rim_by_id(rim_id)
     if not rim:
-        return jsonify({"message": "The provided rim does not exits"}), 400
+        return jsonify({"message": "The provided rim does not exits"}), 422
 
     chain = get_chain_by_id(chain_id)
     if not chain:
-        return jsonify({"message": "The provided chain does not exits"}), 400
+        return jsonify({"message": "The provided chain does not exits"}), 422
 
     existing_combination = get_vc_by_all_attributes(frame, wheel, rim, chain)
 
     if not existing_combination:
         return jsonify(
-            {"message": "The combination with the provided frame, wheel, rim and chain does not exists"}), 400
+            {"message": "The combination with the provided frame, wheel, rim and chain does not exists"}), 422
 
     existing_bike = get_bike_by_all_attributes(frame, wheel, rim, chain)
 
     if existing_bike:
-        return jsonify({"message": "The bike with the selected parts already exist. You can add it in your cart."}), 400
+        return jsonify({"message": "The bike with the selected parts already exist. You can add it in your cart."}), 422
 
     if not any([frame.in_stock, wheel.in_stock, rim.in_stock, chain.in_stock]):
-        return jsonify({"message": "Some of the parts are out of stock."}), 400
+        return jsonify({"message": "Some of the parts are out of stock."}), 422
 
     stock_from_parts = min(frame.stock, wheel.stock, rim.stock, chain.stock)
     price_from_parts = frame.price + wheel.price + rim.price + chain.price
@@ -85,7 +85,7 @@ def create_bike(data):
     else:
         if stock > stock_from_parts:
             return jsonify(
-                {"message": "The provided stock number is greater the the amount of available parts."}), 400
+                {"message": "The provided stock number is greater the the amount of available parts."}), 422
 
     in_stock = False
     if stock > 0:
@@ -153,48 +153,48 @@ def update_bike(id, data):
     bike = get_bike_by_id(id)
 
     if not bike:
-        return jsonify({"message": "Please provide a valid bike"}), 400
+        return jsonify({"message": "Please provide a valid bike"}), 422
 
     if not admin_flag:
         if bike.creator_id != user_id:
-            return jsonify({"message": "You can update only the bikes you've created"}), 400
+            return jsonify({"message": "You can update only the bikes you've created"}), 422
 
     if not name:
-        return jsonify({"message": "Please provide name for the bike"}), 400
+        return jsonify({"message": "Please provide name for the bike"}), 422
 
     if not frame_id:
-        return jsonify({"message": "Please provide frame"}), 400
+        return jsonify({"message": "Please provide frame"}), 422
 
     if not wheel_id:
-        return jsonify({"message": "Please provide wheel"}), 400
+        return jsonify({"message": "Please provide wheel"}), 422
 
     if not rim_id:
-        return jsonify({"message": "Please provide rim"}), 400
+        return jsonify({"message": "Please provide rim"}), 422
 
     if not chain_id:
-        return jsonify({"message": "Please provide chain"}), 400
+        return jsonify({"message": "Please provide chain"}), 422
 
     frame = get_frame_by_id(frame_id)
     if not frame:
-        return jsonify({"message": "The provided frame does not exits"}), 400
+        return jsonify({"message": "The provided frame does not exits"}), 422
 
     wheel = get_wheel_by_id(wheel_id)
     if not wheel:
-        return jsonify({"message": "The provided wheel does not exits"}), 400
+        return jsonify({"message": "The provided wheel does not exits"}), 422
 
     rim = get_rim_by_id(rim_id)
     if not rim:
-        return jsonify({"message": "The provided rim does not exits"}), 400
+        return jsonify({"message": "The provided rim does not exits"}), 422
 
     chain = get_chain_by_id(chain_id)
     if not chain:
-        return jsonify({"message": "The provided chain does not exits"}), 400
+        return jsonify({"message": "The provided chain does not exits"}), 422
 
     existing_combination = get_vc_by_all_attributes(frame, wheel, rim, chain)
 
     if not existing_combination:
         return jsonify(
-            {"message": "The combination with the provided frame, wheel, rim and chain does not exists"}), 400
+            {"message": "The combination with the provided frame, wheel, rim and chain does not exists"}), 422
 
     existing_bike = get_bike_by_all_attributes(frame, wheel, rim, chain)
 
@@ -203,11 +203,11 @@ def update_bike(id, data):
         is_using_same_parts = True
 
     if existing_bike and existing_bike.id != id:
-        return jsonify({"message": "The bike with the selected parts already exist. You can add it in your cart."}), 400
+        return jsonify({"message": "The bike with the selected parts already exist. You can add it in your cart."}), 422
 
     if not is_using_same_parts:
         if not any([frame.in_stock, wheel.in_stock, rim.in_stock, chain.in_stock]):
-            return jsonify({"message": "Some of the parts are out of stock."}), 400
+            return jsonify({"message": "Some of the parts are out of stock."}), 422
 
         stock_from_parts = min(frame.stock, wheel.stock, rim.stock, chain.stock)
         price_from_parts = frame.price + wheel.price + rim.price + chain.price
@@ -220,7 +220,7 @@ def update_bike(id, data):
         else:
             if stock > stock_from_parts:
                 return jsonify(
-                    {"message": "The provided stock number is greater the the amount of available parts."}), 400
+                    {"message": "The provided stock number is greater the the amount of available parts."}), 422
 
         in_stock = False
         if stock > 0:
@@ -248,7 +248,7 @@ def update_bike(id, data):
             stock_from_parts = min(frame.stock, wheel.stock, rim.stock, chain.stock)
             if difference > stock_from_parts:
                 return jsonify(
-                    {"message": "The provided stock number is greater the the amount of available parts."}), 400
+                    {"message": "The provided stock number is greater the the amount of available parts."}), 422
 
             frame.stock -= difference
             wheel.stock -= difference

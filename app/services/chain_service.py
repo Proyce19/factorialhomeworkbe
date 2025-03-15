@@ -15,12 +15,12 @@ def create_chain(data):
         in_stock = True
 
     if not type_chain:
-        return jsonify({"message": "Please provide type of chain"}), 400
+        return jsonify({"message": "Please provide type of chain"}), 422
 
     existing_chain = get_chain_by_type(type_chain)
 
     if existing_chain:
-        return jsonify({"message": "The chain with the provided type already exist."}), 400
+        return jsonify({"message": "The chain with the provided type already exist."}), 422
 
     new_chain = Chain(type=type_chain, price=price, in_stock=in_stock, stock=stock)
     db.session.add(new_chain)
@@ -44,17 +44,17 @@ def update_chain(id, data):
         in_stock = True
 
     if not type_chain:
-        return jsonify({"message": "Please provide type of chain"}), 400
+        return jsonify({"message": "Please provide type of chain"}), 422
 
     existing_chain = get_chain_by_id(id)
 
     if not existing_chain:
-        return jsonify({"message": "Please provide existing chain"}), 400
+        return jsonify({"message": "Please provide existing chain"}), 422
 
     if existing_chain.type != type_chain:
         existing_chain_with_type = get_chain_by_type(type_chain)
         if existing_chain_with_type:
-            return jsonify({"message": "The chain with the provided type already exist."}), 400
+            return jsonify({"message": "The chain with the provided type already exist."}), 422
         existing_chain.type = type_chain
 
     existing_chain.price = price
