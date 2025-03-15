@@ -17,6 +17,13 @@ class Product(db.Model):
     bike = db.relationship('Bike', back_populates='product', uselist=False)
     product_carts = db.relationship('ProductCart', back_populates='product')
 
+    def to_dict(self):
+        return {"id": self.id,
+                "name": self.name,
+                "price": self.price,
+                "stock": self.stock,
+                "in_stock": self.in_stock}
+
     def update_stock(self, diff):
         self.stock -= diff
         self.bike.update_stock(diff)

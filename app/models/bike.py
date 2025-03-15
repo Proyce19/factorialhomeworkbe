@@ -27,6 +27,17 @@ class Bike(db.Model):
     product = db.relationship('Product', back_populates='bike', uselist=False)
     creator = db.relationship('User', back_populates='bikes', foreign_keys=[creator_id])
 
+    def to_dict(self):
+        return {"id": self.id,
+                "name": self.name,
+                "frame": self.frame.name,
+                "rim": self.rim.color,
+                "wheel": self.wheel.type,
+                "chain": self.chain.type,
+                "price": self.price,
+                "stock": self.stock,
+                "in_stock": self.in_stock}
+
     def update_stock(self, diff):
         self.stock -= diff
         self.frame.update_stock(diff)

@@ -15,6 +15,5 @@ class User(db.Model, UserMixin):
     carts = db.relationship('Cart', back_populates='user')
     bikes = db.relationship('Bikes', back_populates='creator')
 
-
     def to_dict(self):
         return {"id": self.id, "username": self.username}

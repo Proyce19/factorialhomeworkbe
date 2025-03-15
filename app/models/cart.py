@@ -12,6 +12,14 @@ class Cart(db.Model):
     is_active = db.Column(db.Boolean, nullable=False, default=False)
     user_id = db.Column(db.Integer, db.ForeignKey("fct.fct_user.id"), nullable=False)
 
+    def to_dict(self):
+        return {"id": self.id,
+                "total": self.total,
+                "is_purchased": self.is_purchased,
+                "is_abandoned": self.is_abandoned,
+                "is_active": self.is_active,
+                "user": self.user.username}
+
     # Relationships
     product_carts = db.relationship('ProductCart', back_populates='cart')
     user = db.relationship('User', back_populates='carts', foreign_keys=[user_id])
