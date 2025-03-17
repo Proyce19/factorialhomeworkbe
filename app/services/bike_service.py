@@ -94,18 +94,23 @@ def create_bike(data):
 
     product_type = get_pt_by_type('bike')
 
-    product = Product(name=f'BIKE-{name}', stock=stock, in_stock=in_stock, price=price, product_type=product_type)
+    if not product_type:
+        return jsonify(
+            {"message": "Create bike product type."}), 422
 
+    product = Product(name=f'BIKE-{name}', stock=stock, in_stock=in_stock, price=price, product_type=product_type)
     new_bike = Bike(name=name,
                     frame=frame,
                     chain=chain,
                     price=price,
+                    wheel=wheel,
+                    rim=rim,
                     in_stock=in_stock,
                     stock=stock,
                     is_created_by_admin=admin_flag,
                     is_created_by_user=not admin_flag,
                     creator_id=user_id,
-                    product_id=product.id)
+                    product=product)
     frame.stock -= stock
     wheel.stock -= stock
     rim.stock -= stock

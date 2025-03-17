@@ -1,6 +1,5 @@
 from app import db
 
-
 class FrameType(db.Model):
     __tablename__ = 'frame_type'
     __table_args__ = {'schema': 'fct'}

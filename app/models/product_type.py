@@ -1,6 +1,5 @@
 from app import db
 
-
 class ProductType(db.Model):
     __tablename__ = 'product_type'
     __table_args__ = {'schema': 'fct'}

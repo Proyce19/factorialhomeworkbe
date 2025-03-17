@@ -1,6 +1,5 @@
 from app import db
 
-
 class FrameFinish(db.Model):
     __tablename__ = 'frame_finish'
     __table_args__ = {'schema': 'fct'}

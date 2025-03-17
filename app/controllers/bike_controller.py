@@ -3,8 +3,6 @@ from flask_jwt_extended import jwt_required
 from flask_login import login_required
 
 from app.services.bike_service import get_all_bikes, get_bike, delete_bike, create_bike, update_bike
-from app.services.chain_service import create_chain, delete_chain, update_chain, get_chain, get_all_chains
-from app.utils.decorators import admin_required
 
 bp = Blueprint("bike", __name__)
 

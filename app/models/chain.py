@@ -1,6 +1,5 @@
 from app import db
 
-
 class Chain(db.Model):
     __tablename__ = 'chain'
     __table_args__ = {'schema': 'fct'}

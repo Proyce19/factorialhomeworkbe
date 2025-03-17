@@ -1,6 +1,5 @@
 from app import db
 
-
 class ValidCombinations(db.Model):
     __tablename__ = 'valid_combinations'
     __table_args__ = {'schema': 'fct'}

@@ -1,6 +1,5 @@
 from app import db
 
-
 class Wheel(db.Model):
     __tablename__ = 'wheel'
     __table_args__ = {'schema': 'fct'}

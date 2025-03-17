@@ -1,6 +1,5 @@
 from app import db
 
-
 class Frame(db.Model):
     __tablename__ = 'frame'
     __table_args__ = {'schema': 'fct'}
@@ -15,7 +14,7 @@ class Frame(db.Model):
 
     # Relationships
     frame_finish = db.relationship('FrameFinish', back_populates='frames', foreign_keys=[frame_finish_id])
-    frame_type = db.relationship('FrameFinish', back_populates='frames', foreign_keys=[frame_type_id])
+    frame_type = db.relationship('FrameType', back_populates='frames', foreign_keys=[frame_type_id])
     bikes = db.relationship('Bike', back_populates='frame')
     valid_combinations = db.relationship('ValidCombinations', back_populates='frame')
 

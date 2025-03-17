@@ -1,6 +1,5 @@
 from app.extensions import db
 
-
 class Bike(db.Model):
     __tablename__ = "bike"
     __table_args__ = {'schema': 'fct'}

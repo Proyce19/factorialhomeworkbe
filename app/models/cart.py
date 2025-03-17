@@ -1,6 +1,5 @@
 from app import db
 
-
 class Cart(db.Model):
     __tablename__ = 'cart'
     __table_args__ = {'schema': 'fct'}

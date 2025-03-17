@@ -94,7 +94,7 @@ CREATE TABLE fct.wheel (
 
 
 CREATE TABLE fct.bike (
-    id INT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     name VARCHAR NOT NULL,
     frame_id INT NOT NULL,
     wheel_id INT NOT NULL,
