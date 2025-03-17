@@ -9,7 +9,6 @@ from app.repositories.valid_combinations_repository import get_vc_by_all_attribu
 from app.repositories.wheel_repository import get_wheel_by_id
 
 
-
 def create_vc(data):
     name = data.get('name', None)
     frame_id = data.get('frameId', None)

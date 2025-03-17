@@ -8,6 +8,7 @@ from app.repositories.bike_repository import get_bike_by_all_attributes, delete_
     get_all_bikes_db, get_all_bikes_created_by_admin_and_by_the_user
 from app.repositories.chain_repository import get_chain_by_type, delete_chain_by_id, get_chain_by_id, get_all_chains_db
 from app.repositories.frame_repository import get_frame_by_id
+from app.repositories.product_repository import delete_product_by_id
 from app.repositories.product_type_repository import get_pt_by_type
 from app.repositories.rim_repository import get_rim_by_id
 from app.repositories.user_repository import get_user_by_id
@@ -128,7 +129,7 @@ def delete_bike(id):
         delete_bike_by_id(id)
     else:
         bike = get_bike_by_id(id)
-        if bike.creator_id == user:
+        if bike.creator_id == user_id:
             delete_product_by_id(bike.product.id)
             delete_bike_by_id(id)
         else:

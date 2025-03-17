@@ -2,6 +2,8 @@ from flask import Blueprint, request
 from flask_jwt_extended import jwt_required
 from flask_login import login_required
 
+from app.services.cart_service import create_cart, delete_cart, update_cart, get_cart
+
 bp = Blueprint("cart", __name__)
 
 

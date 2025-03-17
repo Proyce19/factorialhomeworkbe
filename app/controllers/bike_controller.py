@@ -11,7 +11,6 @@ bp = Blueprint("bike", __name__)
 
 @bp.route("/create", methods=["POST"])
 @login_required
-@admin_required
 @jwt_required()
 def create():
     data = request.json
@@ -19,47 +18,28 @@ def create():
     return response
 
 
-@bp.route("/create-custom", methods=["POST"])
-@login_required
-@jwt_required()
-def create_custom():
-    data = request.json
-    response = create_bike(data)
-    return response
-
 
 @bp.route("/delete/<int:id>", methods=["DELETE"])
 @login_required
-@admin_required
+@jwt_required()
 def delete(id):
     response = delete_bike(id)
     return response
 
 
-@bp.route("/delete-custom/<int:id>", methods=["DELETE"])
-@login_required
-def delete_custom(id):
-    response = delete_bike(id)
-    return response
-
 
 @bp.route("/update/<int:id>", methods=["PUT"])
 @login_required
-@admin_required
+@jwt_required()
 def update(id):
     response = update_bike(id)
     return response
 
-
-@bp.route("/update-custom/<int:id>", methods=["PUT"])
-@login_required
-def update(id):
-    response = update_bike(id)
-    return response
 
 
 @bp.route("/get/<int:id>", methods=["GET"])
 @login_required
+@jwt_required()
 def get(id):
     response = get_bike(id)
     return response
@@ -67,6 +47,7 @@ def get(id):
 
 @bp.route("/", methods=["GET"])
 @login_required
+@jwt_required()
 def get_all():
     response = get_all_bikes()
     return response
