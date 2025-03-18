@@ -21,7 +21,7 @@ def register():
     return response
 
 
-@bp.route("/login", methods=["POST"])
+@bp.route("/login", methods=["POST", 'OPTIONS'])
 def login():
     data = request.json
     response = login_fct_user(data)
