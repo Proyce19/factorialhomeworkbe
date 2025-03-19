@@ -21,8 +21,8 @@ class Frame(db.Model):
     def to_dict(self):
         return {"id": self.id,
                 "name": self.name,
-                "type": self.frame_type,
-                "finish": self.frame_finish,
+                "type": self.frame_type.to_dict(),
+                "finish": self.frame_finish.to_dict(),
                 "price": self.price,
                 "stock": self.stock,
                 "in_stock": self.in_stock}
