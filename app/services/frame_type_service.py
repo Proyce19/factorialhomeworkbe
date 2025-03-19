@@ -36,7 +36,7 @@ def delete_ft(id):
         return jsonify({"message": "Frame type cannot be deleted"}), 422
     delete_ft_by_id(id)
     db.session.commit()
-    return jsonify({"message": "Frame type deleted successfully"}), 204
+    return jsonify({"message": "Frame type deleted successfully"}), 200
 
 
 def update_ft(id, data):

@@ -36,7 +36,7 @@ def delete_ff(id):
         return jsonify({"message": "Frame finish cannot be deleted"}), 422
     delete_ff_by_id(id)
     db.session.commit()
-    return jsonify({"message": "Frame finish deleted successfully"}), 204
+    return jsonify({"message": "Frame finish deleted successfully"}), 200
 
 
 def update_ff(id, data):

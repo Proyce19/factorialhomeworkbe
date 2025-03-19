@@ -30,7 +30,7 @@ def delete_pt(id):
         jsonify({"message": "Product type cannot be deleted"}), 422
     delete_pt_by_id(id)
     db.session.commit()
-    return jsonify({"message": "Product type deleted successfully"}), 204
+    return jsonify({"message": "Product type deleted successfully"}), 200
 
 
 def update_pt(id, data):

@@ -40,7 +40,7 @@ def delete_rim(id):
         return jsonify({"message": "Rim cannot be deleted"}), 422
     delete_rim_by_id(id)
     db.session.commit()
-    return jsonify({"message": "Rim deleted successfully"}), 204
+    return jsonify({"message": "Rim deleted successfully"}), 200
 
 
 def update_rim(id, data):

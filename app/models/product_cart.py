@@ -9,6 +9,8 @@ class ProductCart(db.Model):
 
     product_id = db.Column(db.Integer, db.ForeignKey('fct.product.id'), nullable=False)
     cart_id = db.Column(db.Integer, db.ForeignKey('fct.cart.id'), nullable=False)
+    amount = db.Column(db.Integer, nullable=False, default=0)
+
 
     # Relationships
     product = db.relationship('Product', back_populates='product_carts', foreign_keys=[product_id])

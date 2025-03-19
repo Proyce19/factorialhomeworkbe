@@ -14,16 +14,16 @@ def get_all_vcs_db():
 
 
 def get_vcs_by_chain_id(id):
-    return ValidCombinations.query.filter(chain_id=id).all()
+    return ValidCombinations.query.filter_by(chain_id=id).all()
 
 
 def get_vcs_by_wheel_id(id):
-    return ValidCombinations.query.filter(wheel_id=id).all()
+    return ValidCombinations.query.filter_by(wheel_id=id).all()
 
 
 def get_vcs_by_frame_id(id):
-    return ValidCombinations.query.filter(frame_id=id).all()
+    return ValidCombinations.query.filter_by(frame_id=id).all()
 
 
 def get_vcs_by_rim_id(id):
-    return ValidCombinations.query.filter(rim_id=id).all()
+    return ValidCombinations.query.filter_by(rim_id=id).all()

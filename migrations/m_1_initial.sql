@@ -67,6 +67,7 @@ CREATE TABLE fct.product_cart (
     id SERIAL PRIMARY KEY,
     product_id INTEGER NOT NULL,
     cart_id INTEGER NOT NULL,
+    amount INTEGER NOT NULL DEFAULT 0,
     CONSTRAINT fk_product FOREIGN KEY (product_id) REFERENCES fct.product(id),
     CONSTRAINT fk_cart FOREIGN KEY (cart_id) REFERENCES fct.cart(id)
 );

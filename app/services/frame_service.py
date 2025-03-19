@@ -60,7 +60,7 @@ def delete_frame(id):
         return jsonify({"message": "Frame cannot be deleted"}), 422
     delete_frame_by_id(id)
     db.session.commit()
-    return jsonify({"message": "Frame deleted successfully"}), 204
+    return jsonify({"message": "Frame deleted successfully"}), 200
 
 
 def update_frame(id, data):

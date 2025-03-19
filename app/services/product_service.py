@@ -37,7 +37,7 @@ def delete_product(id):
         return jsonify({"message": "Product with type bike is deleted when the related bike is deleted"}), 422
     delete_product_by_id(id)
     db.session.commit()
-    return jsonify({"message": "Product deleted successfully"}), 204
+    return jsonify({"message": "Product deleted successfully"}), 200
 
 
 def update_product(id, data):

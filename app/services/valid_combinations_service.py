@@ -62,7 +62,7 @@ def create_vc(data):
 def delete_vc(id):
     delete_vc_by_id(id)
     db.session.commit()
-    return jsonify({"message": "Combination deleted successfully"}), 204
+    return jsonify({"message": "Combination deleted successfully"}), 200
 
 
 def get_all_vcs():

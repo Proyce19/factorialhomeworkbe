@@ -40,7 +40,7 @@ def delete_wheel(id):
         return jsonify({"message": "Wheel cannot be deleted"}), 422
     delete_wheel_by_id(id)
     db.session.commit()
-    return jsonify({"message": "Wheel deleted successfully"}), 204
+    return jsonify({"message": "Wheel deleted successfully"}), 200
 
 
 def update_wheel(id, data):

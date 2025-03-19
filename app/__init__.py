@@ -13,6 +13,7 @@ from app.controllers.product_type_controller import bp as pt_bp
 from app.controllers.rim_controller import bp as rim_bp
 from app.controllers.wheel_controller import bp as wheel_bp
 from app.controllers.valid_combinations_controller import bp as vc_bp
+from app.controllers.cart_controller import bp as cart_bp
 
 
 def create_app():
@@ -37,5 +38,6 @@ def create_app():
     app.register_blueprint(rim_bp, url_prefix="/rim")
     app.register_blueprint(wheel_bp, url_prefix="/wheel")
     app.register_blueprint(vc_bp, url_prefix="/valid-combinations")
+    app.register_blueprint(cart_bp, url_prefix="/cart")
 
     return app

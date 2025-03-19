@@ -153,7 +153,7 @@ def delete_bike(id):
             delete_product_by_id(bike.product.id)
             delete_bike_by_id(id)
         else:
-            return jsonify({"message": "You can delete only the bikes you've created"}), 204
+            return jsonify({"message": "You can delete only the bikes you've created"}), 200
     frame.stock += stock
     if frame.stock > 0:
         frame.in_stock = True
@@ -168,7 +168,7 @@ def delete_bike(id):
         chain.in_stock = True
     db.session.add_all([frame,wheel,rim,chain])
     db.session.commit()
-    return jsonify({"message": "Bike deleted successfully"}), 204
+    return jsonify({"message": "Bike deleted successfully"}), 200
 
 
 def update_bike(id, data):

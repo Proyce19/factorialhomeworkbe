@@ -42,7 +42,7 @@ def delete_chain(id):
 
     delete_chain_by_id(id)
     db.session.commit()
-    return jsonify({"message": "Chain deleted successfully"}), 204
+    return jsonify({"message": "Chain deleted successfully"}), 200
 
 
 def update_chain(id, data):

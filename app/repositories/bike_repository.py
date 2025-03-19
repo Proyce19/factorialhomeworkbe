@@ -24,20 +24,24 @@ def get_all_bikes_created_by_admin_and_by_the_user(id):
 
 
 def get_bikes_by_chain_id(id):
-    return Bike.query.filter(chain_id=id).all()
+    return Bike.query.filter_by(chain_id=id).all()
 
 
 def get_bikes_by_wheel_id(id):
-    return Bike.query.filter(wheel_id=id).all()
+    return Bike.query.filter_by(wheel_id=id).all()
 
 
 def get_bikes_by_frame_id(id):
-    return Bike.query.filter(frame_id=id).all()
+    return Bike.query.filter_by(frame_id=id).all()
 
 
 def get_bikes_by_rim_id(id):
-    return Bike.query.filter(rim_id=id).all()
+    return Bike.query.filter_by(rim_id=id).all()
 
 
 def get_bikes_by_product_id(id):
-    return Bike.query.filter(product_id=id).all()
+    return Bike.query.filter_by(product_id=id).all()
+
+
+def get_bike_by_product_id(id):
+    return Bike.query.filter_by(product_id=id).first()
