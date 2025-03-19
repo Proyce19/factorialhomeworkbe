@@ -112,9 +112,18 @@ def create_bike(data):
                     creator_id=user_id,
                     product=product)
     frame.stock -= stock
+    if frame.stock == 0:
+        frame.in_stock = False
     wheel.stock -= stock
+    if wheel.stock == 0:
+        wheel.in_stock = False
     rim.stock -= stock
+    if rim.stock == 0:
+        rim.in_stock = False
     chain.stock -= stock
+    if chain.stock == 0:
+        chain.in_stock = False
+
     db.session.add_all([new_bike, frame, wheel, rim, chain, product])
     db.session.commit()
 
@@ -128,17 +137,37 @@ def delete_bike(id):
     if user.is_admin:
         admin_flag = True
 
+    bike = get_bike_by_id(id)
+    frame = bike.frame
+    wheel = bike.wheel
+    rim = bike.rim
+    chain = bike.chain
+    stock = bike.stock
+
     if admin_flag:
-        bike = get_bike_by_id(id)
+
         delete_product_by_id(bike.product.id)
         delete_bike_by_id(id)
     else:
-        bike = get_bike_by_id(id)
         if bike.creator_id == user_id:
             delete_product_by_id(bike.product.id)
             delete_bike_by_id(id)
         else:
             return jsonify({"message": "You can delete only the bikes you've created"}), 204
+    frame.stock += stock
+    if frame.stock > 0:
+        frame.in_stock = True
+    wheel.stock += stock
+    if wheel.stock > 0:
+        wheel.in_stock = True
+    rim.stock += stock
+    if rim.stock > 0:
+        rim.in_stock = True
+    chain.stock += stock
+    if chain.stock > 0:
+        chain.in_stock = True
+    db.session.add_all([frame,wheel,rim,chain])
+    db.session.commit()
     return jsonify({"message": "Bike deleted successfully"}), 204
 
 
@@ -241,9 +270,17 @@ def update_bike(id, data):
         bike.rim = rim
         bike.chain = chain
         frame.stock -= stock
+        if frame.stock == 0:
+            frame.in_stock = False
         wheel.stock -= stock
+        if wheel.stock == 0:
+            wheel.in_stock = False
         rim.stock -= stock
+        if rim.stock == 0:
+            rim.in_stock = False
         chain.stock -= stock
+        if chain.stock == 0:
+            chain.in_stock = False
         db.session.add_all([bike, frame, wheel, rim, chain])
         db.session.commit()
 
@@ -257,9 +294,17 @@ def update_bike(id, data):
                     {"message": "The provided stock number is greater the the amount of available parts."}), 422
 
             frame.stock -= difference
+            if frame.stock == 0:
+                frame.in_stock = False
             wheel.stock -= difference
+            if wheel.stock == 0:
+                wheel.in_stock = False
             rim.stock -= difference
+            if rim.stock == 0:
+                rim.in_stock = False
             chain.stock -= difference
+            if chain.stock == 0:
+                chain.in_stock = False
             bike.stock = stock
             in_stock = False
             if stock > 0:
@@ -276,10 +321,19 @@ def update_bike(id, data):
             db.session.commit()
         elif stock < old_stock:
             difference = old_stock - stock
+
             frame.stock += difference
+            if frame.stock > 0:
+                frame.in_stock = True
             wheel.stock += difference
+            if wheel.stock > 0:
+                wheel.in_stock = True
             rim.stock += difference
+            if rim.stock > 0:
+                rim.in_stock = True
             chain.stock += difference
+            if chain.stock > 0:
+                chain.in_stock = True
             bike.stock = stock
             in_stock = False
             if stock > 0:
@@ -309,8 +363,13 @@ def get_bike(id):
         if bike.is_created_by_user and bike.creator_id != user_id:
             return jsonify({"message": "You can only see details about your custom bikes"}), 200
 
+    if bike:
+        data = bike.to_dict()
+    else:
+        data = {}
+
     return jsonify({
-        "data": bike.to_dict()}
+        "data": data}
     ), 200
 
 
@@ -325,6 +384,15 @@ def get_all_bikes():
         bikes = get_all_bikes_db()
     else:
         bikes = get_all_bikes_created_by_admin_and_by_the_user(user_id)
+
+    if bikes:
+        if len(bikes) > 0:
+            data = [bike.to_dict() for bike in bikes]
+        else:
+            data = []
+    else:
+        data = []
+
     return jsonify({
-        "data": [bike.to_dict() for bike in bikes]}
+        "data": data}
     ), 200

@@ -15,3 +15,11 @@ def delete_frame_by_id(id):
 
 def get_all_frames_db():
     return Frame.query.all()
+
+
+def get_frames_by_type_id(id):
+    return Frame.query.filter_by(frame_type_id=id).all()
+
+
+def get_frames_by_finish_id(id):
+    return Frame.query.filter_by(frame_finish_id=id).all()

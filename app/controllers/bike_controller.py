@@ -16,7 +16,6 @@ def create():
     return response
 
 
-
 @bp.route("/delete/<int:id>", methods=["DELETE"])
 @login_required
 @jwt_required()
@@ -25,14 +24,13 @@ def delete(id):
     return response
 
 
-
 @bp.route("/update/<int:id>", methods=["PUT"])
 @login_required
 @jwt_required()
 def update(id):
-    response = update_bike(id)
+    data = request.json
+    response = update_bike(id,data)
     return response
-
 
 
 @bp.route("/get/<int:id>", methods=["GET"])

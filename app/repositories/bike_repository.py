@@ -21,3 +21,23 @@ def get_all_bikes_db():
 
 def get_all_bikes_created_by_admin_and_by_the_user(id):
     return Bike.query.filter(or_(Bike.is_created_by_admin, Bike.creator_id == id)).all()
+
+
+def get_bikes_by_chain_id(id):
+    return Bike.query.filter(chain_id=id).all()
+
+
+def get_bikes_by_wheel_id(id):
+    return Bike.query.filter(wheel_id=id).all()
+
+
+def get_bikes_by_frame_id(id):
+    return Bike.query.filter(frame_id=id).all()
+
+
+def get_bikes_by_rim_id(id):
+    return Bike.query.filter(rim_id=id).all()
+
+
+def get_bikes_by_product_id(id):
+    return Bike.query.filter(product_id=id).all()

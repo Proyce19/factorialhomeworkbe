@@ -21,7 +21,3 @@ class Chain(db.Model):
                 "stock": self.stock,
                 "in_stock": self.in_stock}
 
-    def update_stock(self, diff):
-        self.stock -= diff
-        if self.stock == 0:
-            self.in_stock = False

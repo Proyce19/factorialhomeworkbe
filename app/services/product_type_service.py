@@ -2,6 +2,7 @@ from flask import jsonify
 
 from app import db
 from app.models.product_type import ProductType
+from app.repositories.product_repository import get_products_by_type_id
 from app.repositories.product_type_repository import get_pt_by_type, delete_pt_by_id, get_pt_by_id, get_all_pts_db
 
 
@@ -24,7 +25,11 @@ def create_pt(data):
 
 
 def delete_pt(id):
+    products = get_products_by_type_id(id)
+    if products and len(products) > 0:
+        jsonify({"message": "Product type cannot be deleted"}), 422
     delete_pt_by_id(id)
+    db.session.commit()
     return jsonify({"message": "Product type deleted successfully"}), 204
 
 
@@ -53,13 +58,28 @@ def update_pt(id, data):
 
 def get_pt(id):
     pt = get_pt_by_id(id)
+
+    if pt:
+        data = pt.to_dict()
+    else:
+        data = {}
+
     return jsonify({
-        "data": pt.to_dict()}
+        "data": data}
     ), 200
 
 
 def get_all_pts():
     pts = get_all_pts_db()
+
+    if pts:
+        if len(pts):
+            data = [pt.to_dict() for pt in pts]
+        else:
+            data = []
+    else:
+        data = []
+
     return jsonify({
-        "data": [pt.to_dict() for pt in pts]}
+        "data": data}
     ), 200

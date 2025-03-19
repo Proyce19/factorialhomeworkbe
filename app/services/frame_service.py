@@ -2,10 +2,12 @@ from flask import jsonify
 
 from app import db
 from app.models.frame import Frame
+from app.repositories.bike_repository import get_bikes_by_frame_id
 from app.repositories.frame_finish_repository import get_ff_by_id
 from app.repositories.frame_repository import get_frame_by_type_and_finish, delete_frame_by_id, get_frame_by_id, \
     get_all_frames_db
 from app.repositories.frame_type_repository import get_ft_by_id
+from app.repositories.valid_combinations_repository import get_vcs_by_frame_id
 
 
 def create_frame(data):
@@ -50,7 +52,14 @@ def create_frame(data):
 
 
 def delete_frame(id):
+    bikes = get_bikes_by_frame_id(id)
+    if bikes and len(bikes) > 0:
+        return jsonify({"message": "Frame cannot be deleted"}), 422
+    vcs = get_vcs_by_frame_id(id)
+    if vcs and len(vcs) > 0:
+        return jsonify({"message": "Frame cannot be deleted"}), 422
     delete_frame_by_id(id)
+    db.session.commit()
     return jsonify({"message": "Frame deleted successfully"}), 204
 
 
@@ -107,13 +116,28 @@ def update_frame(id, data):
 
 def get_frame(id):
     frame = get_frame_by_id(id)
+
+    if frame:
+        data = frame.to_dict()
+    else:
+        data = {}
+
     return jsonify({
-        "data": frame.to_dict()}
+        "data": data}
     ), 200
 
 
 def get_all_frames():
     frames = get_all_frames_db()
+
+    if frames:
+        if len(frames) > 0:
+            data = [frame.to_dict() for frame in frames]
+        else:
+            data = []
+    else:
+        data = []
+
     return jsonify({
-        "data": [frame.to_dict() for frame in frames]}
+        "data": data}
     ), 200

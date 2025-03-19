@@ -28,7 +28,8 @@ def delete(id):
 @login_required
 @admin_required
 def update(id):
-    response = update_ff(id)
+    data = request.json
+    response = update_ff(id, data)
     return response
 
 

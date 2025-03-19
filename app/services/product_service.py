@@ -36,6 +36,7 @@ def delete_product(id):
     if product.product_type.type == "bike":
         return jsonify({"message": "Product with type bike is deleted when the related bike is deleted"}), 422
     delete_product_by_id(id)
+    db.session.commit()
     return jsonify({"message": "Product deleted successfully"}), 204
 
 
@@ -76,13 +77,28 @@ def update_product(id, data):
 
 def get_product(id):
     product = get_product_by_id(id)
+
+    if product:
+        data = product.to_dict()
+    else:
+        data = {}
+
     return jsonify({
-        "data": product.to_dict()}
+        "data": data}
     ), 200
 
 
 def get_all_products():
     products = get_all_products_db()
+
+    if products:
+        if len(products) > 0:
+            data = [pt.to_dict() for pt in products]
+        else:
+            data = []
+    else:
+        data = []
+
     return jsonify({
-        "data": [pt.to_dict() for pt in products]}
+        "data": data}
     ), 200

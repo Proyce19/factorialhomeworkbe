@@ -29,6 +29,7 @@ def create_cart(data):
 def delete_cart(id):
     delete_pc_by_cart_id(id)
     delete_cart_by_id(id)
+    db.session.commit()
     return jsonify({"message": "Cart deleted successfully"}), 204
 
 
@@ -63,6 +64,12 @@ def update_cart(id, data):
 
 def get_cart(id):
     cart = get_cart_by_id(id)
+
+    if cart:
+        data = cart.to_dict()
+    else:
+        data = {}
+
     return jsonify({
-        "data": cart.to_dict()}
+        "data": data}
     ), 200

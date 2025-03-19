@@ -2,6 +2,8 @@ from flask import jsonify
 
 from app import db
 from app.models.wheel import Wheel
+from app.repositories.bike_repository import get_bikes_by_wheel_id
+from app.repositories.valid_combinations_repository import get_vcs_by_wheel_id
 from app.repositories.wheel_repository import get_wheel_by_type, get_wheel_by_id, delete_wheel_by_id, get_all_wheels_db
 
 
@@ -30,7 +32,14 @@ def create_wheel(data):
 
 
 def delete_wheel(id):
+    bikes = get_bikes_by_wheel_id(id)
+    if bikes and len(bikes) > 0:
+        return jsonify({"message": "Wheel cannot be deleted"}), 422
+    vcs = get_vcs_by_wheel_id(id)
+    if vcs and len(vcs) > 0:
+        return jsonify({"message": "Wheel cannot be deleted"}), 422
     delete_wheel_by_id(id)
+    db.session.commit()
     return jsonify({"message": "Wheel deleted successfully"}), 204
 
 
@@ -69,13 +78,28 @@ def update_wheel(id, data):
 
 def get_wheel(id):
     wheel = get_wheel_by_id(id)
+
+    if wheel:
+        data = wheel.to_dict()
+    else:
+        data = {}
+
     return jsonify({
-        "data": wheel.to_dict()}
+        "data": data}
     ), 200
 
 
 def get_all_wheels():
     wheels = get_all_wheels_db()
+
+    if wheels:
+        if len(wheels) > 0:
+            data = [wheel.to_dict() for wheel in wheels]
+        else:
+            data = []
+    else:
+        data = []
+
     return jsonify({
-        "data": [wheel.to_dict() for wheel in wheels]}
+        "data": data}
     ), 200

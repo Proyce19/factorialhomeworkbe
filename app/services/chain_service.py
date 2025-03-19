@@ -2,7 +2,9 @@ from flask import jsonify
 
 from app import db
 from app.models.chain import Chain
+from app.repositories.bike_repository import get_bikes_by_chain_id
 from app.repositories.chain_repository import get_chain_by_type, delete_chain_by_id, get_chain_by_id, get_all_chains_db
+from app.repositories.valid_combinations_repository import get_vcs_by_chain_id
 
 
 def create_chain(data):
@@ -30,7 +32,16 @@ def create_chain(data):
 
 
 def delete_chain(id):
+    bikes = get_bikes_by_chain_id(id)
+    if bikes and len(bikes) > 0:
+        return jsonify({"message": "Chain cannot be deleted"}), 422
+
+    vcs = get_vcs_by_chain_id(id)
+    if vcs and len(vcs) > 0:
+        return jsonify({"message": "Chain cannot be deleted"}), 422
+
     delete_chain_by_id(id)
+    db.session.commit()
     return jsonify({"message": "Chain deleted successfully"}), 204
 
 
@@ -69,13 +80,28 @@ def update_chain(id, data):
 
 def get_chain(id):
     chain = get_chain_by_id(id)
+
+    if chain:
+        data = chain.to_dict()
+    else:
+        data = {}
+
     return jsonify({
-        "data": chain.to_dict()}
+        "data": data}
     ), 200
 
 
 def get_all_chains():
     chains = get_all_chains_db()
+
+    if chains:
+        if len(chains) > 0:
+            data = [chain.to_dict() for chain in chains]
+        else:
+            data = []
+    else:
+        data = []
+
     return jsonify({
-        "data": [chain.to_dict() for chain in chains]}
+        "data": data}
     ), 200

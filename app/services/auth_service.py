@@ -1,3 +1,4 @@
+from datetime import timedelta
 from typing import Tuple
 
 from flask import jsonify, Response
@@ -20,6 +21,7 @@ def login_fct_user(data: dict) -> tuple[Response, int]:
         return jsonify({"message": "Invalid credentials"}), 401
 
     login_user(user)
+    login_user(user, remember=True, duration=timedelta(days=1))
     access_token = create_access_token(identity=user.id)
     return jsonify({"message": "Logged in", "access_token": access_token}), 200
 

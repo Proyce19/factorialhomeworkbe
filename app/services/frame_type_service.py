@@ -2,6 +2,7 @@ from flask import jsonify
 
 from app import db
 from app.models.frame_type import FrameType
+from app.repositories.frame_repository import get_frames_by_type_id
 from app.repositories.frame_type_repository import delete_ft_by_id, get_ft_by_type, get_ft_by_id, get_all_fts_db
 
 
@@ -30,7 +31,11 @@ def create_ft(data):
 
 
 def delete_ft(id):
+    frames = get_frames_by_type_id(id)
+    if frames and len(frames) > 0:
+        return jsonify({"message": "Frame type cannot be deleted"}), 422
     delete_ft_by_id(id)
+    db.session.commit()
     return jsonify({"message": "Frame type deleted successfully"}), 204
 
 
@@ -69,14 +74,28 @@ def update_ft(id, data):
 
 def get_ft(id):
     ft = get_ft_by_id(id)
-    return jsonify({
-        "data": ft.to_dict()}
-    ), 200
 
+    if ft:
+        data = ft.to_dict()
+    else:
+        data = {}
+
+    return jsonify({
+        "data": data}
+    ), 200
 
 
 def get_all_fts():
     fts = get_all_fts_db()
+
+    if fts:
+        if len(fts) > 0:
+            data = [ft.to_dict() for ft in fts]
+        else:
+            data = []
+    else:
+        data = []
+
     return jsonify({
-        "data": [ft.to_dict() for ft in fts]}
+        "data": data}
     ), 200

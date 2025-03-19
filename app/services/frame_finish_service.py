@@ -3,6 +3,7 @@ from flask import jsonify
 from app import db
 from app.models.frame_finish import FrameFinish
 from app.repositories.frame_finish_repository import get_all_ffs_db, get_ff_by_id, get_ff_by_type, delete_ff_by_id
+from app.repositories.frame_repository import get_frames_by_finish_id
 
 
 def create_ff(data):
@@ -30,7 +31,11 @@ def create_ff(data):
 
 
 def delete_ff(id):
+    frames = get_frames_by_finish_id(id)
+    if frames and len(frames) > 0:
+        return jsonify({"message": "Frame finish cannot be deleted"}), 422
     delete_ff_by_id(id)
+    db.session.commit()
     return jsonify({"message": "Frame finish deleted successfully"}), 204
 
 
@@ -69,13 +74,28 @@ def update_ff(id, data):
 
 def get_ff(id):
     ff = get_ff_by_id(id)
+
+    if ff:
+        data = ff.to_dict()
+    else:
+        data = {}
+
     return jsonify({
-        "data": ff.to_dict()}
+        "data": data}
     ), 200
 
 
 def get_all_ffs():
     ffs = get_all_ffs_db()
+
+    if ffs:
+        if len(ffs) > 0:
+            data = [ff.to_dict() for ff in ffs]
+        else:
+            data = []
+    else:
+        data = []
+
     return jsonify({
-        "data": [ff.to_dict() for ff in ffs]}
+        "data": data}
     ), 200

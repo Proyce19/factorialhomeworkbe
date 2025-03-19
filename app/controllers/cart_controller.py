@@ -26,7 +26,8 @@ def delete(id):
 @bp.route("/update/<int:id>", methods=["PUT"])
 @login_required
 def update(id):
-    response = update_cart(id)
+    data = request.json
+    response = update_cart(id, data)
     return response
 
 

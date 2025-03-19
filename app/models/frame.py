@@ -27,9 +27,4 @@ class Frame(db.Model):
                 "stock": self.stock,
                 "in_stock": self.in_stock}
 
-    def update_stock(self, diff):
-        self.stock -= diff
-        self.frame_type.update_stock(diff)
-        self.frame_finish.update_stock(diff)
-        if self.stock == 0:
-            self.in_stock = False
+

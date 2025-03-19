@@ -17,4 +17,12 @@ class ValidCombinations(db.Model):
     rim = db.relationship('Rim', back_populates='valid_combinations', foreign_keys=[rim_id])
     chain = db.relationship('Chain', back_populates='valid_combinations', foreign_keys=[chain_id])
 
+    def to_dict(self):
+        return {"id": self.id,
+                "name": self.name,
+                "frame": self.frame.to_dict(),
+                "rim": self.rim.to_dict(),
+                "wheel": self.wheel.to_dict(),
+                "chain": self.chain.to_dict()}
+
 

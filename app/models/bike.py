@@ -38,11 +38,4 @@ class Bike(db.Model):
                 "in_stock": self.in_stock,
                 "product_id": self.product_id}
 
-    def update_stock(self, diff):
-        self.stock -= diff
-        self.frame.update_stock(diff)
-        self.wheel.update_stock(diff)
-        self.rim.update_stock(diff)
-        self.chain.update_stock(diff)
-        if self.stock == 0:
-            self.in_stock = False
+
