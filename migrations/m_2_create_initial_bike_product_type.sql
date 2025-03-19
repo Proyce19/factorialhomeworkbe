@@ -1,0 +1,1 @@
+insert into fct.product_type(type) values ('bike')
